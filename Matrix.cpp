@@ -6,6 +6,8 @@
 #include <iostream>
 #include <sstream>
 
+Rand Matrix::rnd;
+
 Matrix::Matrix():
   row(0), col(0), data(0)
 {}
@@ -73,6 +75,12 @@ void Matrix::print() const{
 void Matrix::fill(const Matrix::Real val){
   for (unsigned int i = 0; i < this->row*this->col; ++i){
     this->data[i] = val;
+  }
+}
+
+void Matrix::setRandom(const Matrix::Real scale){
+  for (unsigned int i = 0; i < this->row*this->col; ++i){
+    this->data[i] = 2.0*Matrix::rnd.zero2one() - 1.0;
   }
 }
 

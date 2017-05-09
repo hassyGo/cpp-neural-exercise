@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Rand.hpp"
 #include <string>
 
 class Matrix{
@@ -18,6 +19,7 @@ public:
   void print() const;
 
   void fill(const Matrix::Real val);
+  void setRandom(const Matrix::Real scale); // uniform random initialization
   Matrix::Real sum() const;
   Matrix::Real maxCoeff() const;
   Matrix::Real dot(const Matrix& arg) const; // dot product: sum of element-wise products
@@ -44,4 +46,6 @@ private:
   unsigned int col;
 
   Matrix::Real* data; // store matrix data in a one-dimensional array
+
+  static Rand rnd; // random number generator (XOR-shift)
 };

@@ -1,10 +1,12 @@
 #pragma once
 
 #include "Matrix.hpp"
+#include "Affine.hpp"
 #include <iostream>
 #include <fstream>
 #include <sstream>
 
+// basic matrix-vector operations
 void test1(){
   Matrix A(3, 4);
   Matrix B(4, 1);
@@ -124,11 +126,48 @@ void test1(){
     exit(1);
   }
   
-  std::cout << "***** Passed the first test *****" << std::endl;
+  std::cout << "***** Passed the first test *****" << std::endl << std::endl;
 }
 
+// forward propagation
 void test2(){
-  std::cout << "!!!!! Failed to pass the second test !!!!!" << std::endl;
+  Matrix inputVec(5, 1); // input vector
+  Affine hiddenAffine(5, 4); // tanh hidden layer
+  Affine softmaxAffine(4, 3); // 3-class classification
+
+  inputVec.setRandom(0.1);
+  hiddenAffine.setRandom(0.1);
+  softmaxAffine.setRandom(0.1);
+
+  Matrix hiddenVec = hiddenAffine.forward(inputVec).tanh();
+  Matrix outputVec = softmaxAffine.forward(hiddenVec).softmax();
+
+  hiddenVec.print();
+  std::cout << std::endl;
+
+  outputVec.print();
+  std::cout << std::endl;
+
+  /*
+  std::ofstream h("./test/TEST2_hidden.txt");
+  h << hiddenVec.print_() << std::endl;
+  std::ofstream o("./test/TEST2_output.txt");
+  o << outputVec.print_() << std::endl;
+  */
+
+  std::ifstream h("./test/TEST2_hidden.txt");
+  std::ifstream o("./test/TEST2_output.txt");
+  std::string line1, line2;
+
+  std::getline(h, line1);
+  std::getline(o, line2);
+  if (line1 != hiddenVec.print_() || line2 != outputVec.print_()){
+    std::cout << "Something is wrong!" << std::endl;
+    std::cout << "Please check the forward function in Affine." << std::endl;
+    exit(1);
+  }
+
+  std::cout << "***** Passed the second test *****" << std::endl << std::endl;
 }
 
 void test3(){
